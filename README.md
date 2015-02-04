@@ -15,14 +15,14 @@ Not ready yet. Do not use it.
 
 2. Create new status for usage in specific model
 
-    $model = new Article(); // or any instance of model with StatusableBehavior 
+    `$model = new Article(); // or any instance of model with StatusableBehavior 
     $status = new \itzen\status\models\Status();
     $status->name = 'Status name';
     if ($model->addStatus($status)) {
         // Success
     } else {
         echo Html::errorSummary($status);
-    }
+    }`
     
 3. Get status name
     
