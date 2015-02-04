@@ -10,7 +10,7 @@ use kartik\datecontrol\DateControl;
  */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('common', 'Statuses'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'Statuses'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="status-view">
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'deleteOptions'=>[
             'url'=>['delete', 'id' => $model->id],
             'data'=>[
-                'confirm'=> Yii::t('common', 'Are you sure you want to delete this item?'),
+                'confirm'=> Yii::t(Yii::$app->getModule('status')->translateCategory, 'Are you sure you want to delete this item?'),
                 'method'=>'post',
             ],
         ],

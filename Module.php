@@ -17,6 +17,12 @@ class Module extends \yii\base\Module {
     public $controllerNamespace = 'itzen\status\controllers';
 
     /**
+     * @var string
+     * Translate category used in Yii::t() function
+     */
+    public $translateCategory = 'common';
+
+    /**
      * @inheritdoc
      */
     public function init() {

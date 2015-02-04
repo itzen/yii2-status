@@ -64,10 +64,10 @@ class Status extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('common', 'ID'),
-            'sortorder' => Yii::t('common', 'Sortorder'),
-            'name' => Yii::t('common', 'Name'),
-            'object_key' => Yii::t('common', 'Object Key'),
+            'id' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'ID'),
+            'sortorder' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'Sortorder'),
+            'name' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'Name'),
+            'object_key' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'Object Key'),
         ];
     }
 

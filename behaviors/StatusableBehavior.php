@@ -37,14 +37,14 @@ class StatusableBehavior extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_FIND => 'afterFind'
+            ActiveRecord::EVENT_INIT => 'onInit'
         ];
     }
 
     /**
      * Adds properties to model which are required by this behavior
      */
-    public function afterFind()
+    public function onInit()
     {
         if (!$this->object_key) {
             $this->object_key = get_class($this->owner);
@@ -76,7 +76,7 @@ class StatusableBehavior extends Behavior
 
         if ($translate) {
             foreach ($statuses as $key => $status) {
-                $statuses[$key]->name = \Yii::t('common', $status->name);
+                $statuses[$key]->name = \Yii::t(Yii::$app->getModule('status')->translateCategory, $status->name);
             }
 
         }
@@ -87,7 +87,7 @@ class StatusableBehavior extends Behavior
     {
         $status = Status::findOne(['id' => $this->owner->{$this->statusColumn}]);
         if ($translate) {
-            $status->name = \Yii::t('common', $status->name);
+            $status->name = \Yii::t(Yii::$app->getModule('status')->translateCategory, $status->name);
         }
         return $status;
     }

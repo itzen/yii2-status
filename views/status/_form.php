@@ -21,12 +21,12 @@ use kartik\datecontrol\DateControl;
         'form' => $form,
         'columns' => 1,
         'attributes' => [
-            'sortorder'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>Yii::t('common', 'Enter Sortorder...')]],
-'name'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>Yii::t('common', 'Enter Name...'), 'maxlength'=>45]],
-'object_key'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>Yii::t('common', 'Enter Object Key...'), 'maxlength'=>128]],
+            'sortorder'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>Yii::t(Yii::$app->getModule('status')->translateCategory, 'Enter Sortorder...')]],
+'name'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>Yii::t(Yii::$app->getModule('status')->translateCategory, 'Enter Name...'), 'maxlength'=>45]],
+'object_key'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>Yii::t(Yii::$app->getModule('status')->translateCategory, 'Enter Object Key...'), 'maxlength'=>128]],
         ]
     ]);
-    echo Html::submitButton($model->isNewRecord ? Yii::t('common', 'Create') : Yii::t('common', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    echo Html::submitButton($model->isNewRecord ? Yii::t(Yii::$app->getModule('status')->translateCategory, 'Create') : Yii::t(Yii::$app->getModule('status')->translateCategory, 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
 
 
