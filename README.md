@@ -4,25 +4,29 @@ Not ready yet. Do not use it.
 
 # Usage
 1. Add behavior to model
-    `public function behaviors() {
+    ```php
+    public function behaviors() {
             return [
                 [
                     'class' => \itzen\status\behaviors\StatusableBehavior::className(),
                 ],
                 // Other behaviors
             ];
-    }`
+    }
+    ```
 
 2. Create new status for usage in specific model
 
-    `$model = new Article(); // or any instance of model with StatusableBehavior 
+    ```php
+    $model = new Article(); // or any instance of model with StatusableBehavior 
     $status = new \itzen\status\models\Status();
     $status->name = 'Status name';
     if ($model->addStatus($status)) {
         // Success
     } else {
         echo Html::errorSummary($status);
-    }`
+    }
+    ```
     
 3. Get status name
     
