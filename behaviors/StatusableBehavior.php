@@ -1,6 +1,6 @@
 <?php
 
-namespace itzen\comments\behaviors;
+namespace itzen\status\behaviors;
 
 use Closure;
 use itzen\status\models\Status;
@@ -50,7 +50,7 @@ class StatusableBehavior extends Behavior
             $this->object_key = get_class($this->owner);
         }
         if (!$this->owner->hasProperty($this->statusColumn)) {
-            throw new InvalidConfigException("Model {get_class($this->owner)} has not {$this->statusColumn} property. Set Behavior \$statusColumn to status column name.");
+            //throw new InvalidConfigException("Model {get_class($this->owner)} has not {$this->statusColumn} property. Set Behavior \$statusColumn to status column name.");
         }
     }
 
@@ -64,25 +64,32 @@ class StatusableBehavior extends Behavior
         if ($status->save()) {
             return true;
         } else {
-            return $status->getErrors();
+            return false;
         }
     }
 
-    public function getAvailableStatuses()
+    public function getAvailableStatuses($translate = true)
     {
-        $searchModel = new \itzen\status\models\search\Status();
+        $statuses = Status::find()->where(
+            ['or', 'object_key IS NULL', 'object_key=:object_key']
+        )->params([':object_key' => $this->object_key])->all();
 
-        $dataProvider = $searchModel->searchForModel($this->object_key);
+        if ($translate) {
+            foreach ($statuses as $key => $status) {
+                $statuses[$key]->name = \Yii::t('common', $status->name);
+            }
 
-        return [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider
-        ];
+        }
+        return $statuses;
     }
 
-    public function getStatus()
+    public function getStatus($translate = true)
     {
-        Status::findOne(['id' => $this->{$this->statusColumn}]);
+        $status = Status::findOne(['id' => $this->owner->{$this->statusColumn}]);
+        if ($translate) {
+            $status->name = \Yii::t('common', $status->name);
+        }
+        return $status;
     }
 
     public function saveStatus($status_id)
