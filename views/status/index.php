@@ -8,7 +8,7 @@ use kartik\detail\DetailViewAsset;
 /* @var $searchModel backend\modules\core\models\search\Status */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t(Yii::$app->getModule('status')->translateCategory, 'Statuses');
+$this->title = Yii::t(\itzen\status\Module::$translateCategory, 'Statuses');
 $this->params['breadcrumbs'][] = $this->title;
 
 DetailViewAsset::register($this);

@@ -19,7 +19,7 @@ Not ready yet. Do not use it.
 
     ```php
     $model = new Article(); // or any instance of model with StatusableBehavior 
-    $status = new \itzen\status\models\Status();
+    $status = new \itzen\status\Modules\Status();
     $status->name = 'Status name';
     if ($model->addStatus($status)) {
         // Success

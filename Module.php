@@ -20,15 +20,15 @@ class Module extends \yii\base\Module {
      * @var string
      * Translate category used in Yii::t() function
      */
-    public $translateCategory = 'common';
+    public static $translateCategory = 'common';
 
     /**
      * @inheritdoc
      */
     public function init() {
         parent::init();
-        if (!isset(Yii::$app->i18n->translations['itzen']) || !isset(Yii::$app->i18n->translations['*'])) {
-            Yii::$app->i18n->translations['itzen'] = [
+        if (!isset(Yii::$app->i18n->translations[self::$translateCategory]) && !isset(Yii::$app->i18n->translations['*'])) {
+            Yii::$app->i18n->translations[self::$translateCategory] = [
                 'class' => 'yii\i18n\PhpMessageSource',
                 'sourceLanguage' => 'en',
                 'basePath' => '@itzen/status/messages'

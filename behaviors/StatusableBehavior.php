@@ -49,8 +49,9 @@ class StatusableBehavior extends Behavior
         if (!$this->object_key) {
             $this->object_key = get_class($this->owner);
         }
-        if (!$this->owner->hasProperty($this->statusColumn)) {
-            //throw new InvalidConfigException("Model {get_class($this->owner)} has not {$this->statusColumn} property. Set Behavior \$statusColumn to status column name.");
+        if (!$this->owner->hasAttribute($this->statusColumn)) {
+
+            throw new InvalidConfigException("Model {get_class($this->owner)} has not {$this->statusColumn} property. Set Behavior \$statusColumn to status column name.");
         }
     }
 
@@ -76,7 +77,7 @@ class StatusableBehavior extends Behavior
 
         if ($translate) {
             foreach ($statuses as $key => $status) {
-                $statuses[$key]->name = \Yii::t(Yii::$app->getModule('status')->translateCategory, $status->name);
+                $statuses[$key]->name = Yii::t(\itzen\status\Module::$translateCategory, $status->name);
             }
 
         }
@@ -87,7 +88,7 @@ class StatusableBehavior extends Behavior
     {
         $status = Status::findOne(['id' => $this->owner->{$this->statusColumn}]);
         if ($translate) {
-            $status->name = \Yii::t(Yii::$app->getModule('status')->translateCategory, $status->name);
+            $status->name = \Yii::t(\itzen\status\Module::$translateCategory, $status->name);
         }
         return $status;
     }

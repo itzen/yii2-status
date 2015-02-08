@@ -58,16 +58,21 @@ class Status extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function __toString(){
+        return $this->name;
+    }
+
     /**
      * @inheritdoc
      */
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'ID'),
-            'sortorder' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'Sortorder'),
-            'name' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'Name'),
-            'object_key' => Yii::t(Yii::$app->getModule('status')->translateCategory, 'Object Key'),
+            'id' => Yii::t(\itzen\status\Module::$translateCategory, 'ID'),
+            'sortorder' => Yii::t(\itzen\status\Module::$translateCategory, 'Sortorder'),
+            'name' => Yii::t(\itzen\status\Module::$translateCategory, 'Name'),
+            'object_key' => Yii::t(\itzen\status\Module::$translateCategory, 'Object Key'),
         ];
     }
 
