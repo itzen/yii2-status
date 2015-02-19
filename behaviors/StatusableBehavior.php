@@ -84,6 +84,19 @@ class StatusableBehavior extends Behavior
         return $statuses;
     }
 
+    public function getAvailableStatusesForKey($translate = true)
+    {
+        $statuses = Status::find()->where(['object_key' => $this->object_key])->all();
+
+        if ($translate) {
+            foreach ($statuses as $key => $status) {
+                $statuses[$key]->name = Yii::t(\itzen\status\Module::$translateCategory, $status->name);
+            }
+
+        }
+        return $statuses;
+    }
+
     public function getStatus($translate = true)
     {
         $status = Status::findOne(['id' => $this->owner->{$this->statusColumn}]);

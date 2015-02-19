@@ -22,8 +22,6 @@ class Module extends \yii\base\Module {
      */
     public static $translateCategory = 'common';
 
-    public $forReviewId;
-
     public $defaultIds = [];
 
     /**
