@@ -20,11 +20,9 @@ use yii\helpers\Html;
 
     echo $form->errorSummary($model);
 
-    echo $form->field($model, 'name')->textInput(['max' => true]);
+    echo $form->field($model, 'label')->textInput(['max' => true]);
 
-    echo $form->field($model, 'object_key')->textInput(['max' => true]);
-
-    echo $form->field($model, 'priority')->textInput(['max' => true]);
+    echo $form->field($model, 'group_name')->textInput(['max' => true]);
 
     echo Html::submitButton(StatusModule::t('core', 'Continue'), ['class' => 'btn btn-success']);
 

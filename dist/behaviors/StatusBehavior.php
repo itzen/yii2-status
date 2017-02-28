@@ -2,10 +2,12 @@
 
 namespace sonkei\status\behaviors;
 
+use sonkei\status\models\ObjectStatus;
 use sonkei\status\models\Status;
+use Yii;
 use yii\base\Behavior;
-use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class StatusBehavior
@@ -16,15 +18,10 @@ class StatusBehavior extends Behavior
 {
     #region Options
     /**
-     * Status property name in owner model which holds status id.
-     * @var string $statusColumn
+     * The name of relation
+     * @var string $status_relation
      */
-    public $statusColumn = 'status_id';
-    /**
-     * Key that uniquely identifies the model. Default to fully qualified class name of the model.
-     * @var string $object_key
-     */
-    public $object_key;
+    public $status_relation;
     #endregion
 
     #region Core
@@ -32,56 +29,62 @@ class StatusBehavior extends Behavior
     function events()
     {
         return [
-            ActiveRecord::EVENT_INIT => 'onInit'
+            ActiveRecord::EVENT_INIT => 'afterInit'
         ];
     }
     #endregion
 
     #region Events
-    /**
-     * Adds properties to model which are required by this behavior
-     * @throws InvalidConfigException
-     */
-    function onInit()
+    /** @inheritdoc */
+    function afterInit()
     {
-        if (!$this->object_key) {
-            $this->object_key = get_class($this->owner);
-        }
-        if (!$this->owner->hasAttribute($this->statusColumn)) {
-            throw new InvalidConfigException("Model {get_class($this->owner)} has not {$this->statusColumn} property. Set Behavior \$statusColumn to status column name.");
-        }
+        # Check if relation exist
+        $this->owner->getRelation($this->status_relation);
     }
     #endregion
 
     #region Public methods
     /**
      * Add new status
+     * @param Status $mdlStatus
+     * @return bool
+     */
+    function addStatus(Status $mdlStatus)
+    {
+        #@todo Replace status if group_name match
+        /** @var ObjectStatus $object_status */
+        $object_status = Yii::createObject([
+            'class' => ObjectStatus::className(),
+            'status_id' => $mdlStatus->id,
+            'group_name' => $mdlStatus->group_name,
+            'object_id' => $this->owner->primaryKey
+        ]);
+        return $object_status->save();
+    }
+
+    /**
      * @param Status $status
      * @return bool
      */
-    function addStatus(Status $status)
+    function isStatusSet(Status $status)
     {
-        $status->object_key = $this->object_key;
-        return $status->save();
+        return array_key_exists($status->id, ArrayHelper::index($this->getAllStatuses(), 'id'));
     }
 
-    /**
-     * @param $status_id
-     * @return int
-     */
-    function saveStatus($status_id)
-    {
-        return $this->owner->updateAttributes([
-            $this->statusColumn => $status_id
-        ]);
-    }
+    #endregion
+
+    #region Protected methods
+    protected $statuses = [];
 
     /**
-     * @param $status_id
+     * @return Status[]
      */
-    function setStatus($status_id)
+    function getAllStatuses()
     {
-        return $this->owner->setAttribute($this->statusColumn, $status_id);
+        if (!count($this->statuses)) {
+            $this->statuses = $this->owner->{$this->status_relation};
+        }
+        return $this->statuses;
     }
     #endregion
 }

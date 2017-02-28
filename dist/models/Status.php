@@ -3,7 +3,6 @@
 namespace sonkei\status\models;
 
 use sonkei\status\Module as StatusModule;
-use yii\db\ActiveQuery;
 use yii\db\ActiveRecord as BaseModule;
 
 /**
@@ -11,9 +10,8 @@ use yii\db\ActiveRecord as BaseModule;
  * @package sonkei\status\models
  *
  * @property integer $id
- * @property integer $priority
- * @property string $name
- * @property string $object_key
+ * @property string $group_name
+ * @property string $label
  */
 class Status extends BaseModule
 {
@@ -24,28 +22,17 @@ class Status extends BaseModule
         return '{{%status}}';
     }
 
-    /**
-     * @return ActiveQuery
-     */
-    static function find()
-    {
-        return parent::find()
-            ->orderBy(['priority' => SORT_ASC]);
-    }
-
     /** @inheritdoc */
     function rules()
     {
         return [
-            'nameRequired' => ['name', 'required'],
-            'nameFilter' => ['name', 'filter', 'filter' => 'trim'],
-            'nameString' => ['name', 'string', 'max' => 45],
+            'labelRequired' => ['label', 'required'],
+            'labelFilter' => ['label', 'filter', 'filter' => 'trim'],
+            'labelString' => ['label', 'string', 'max' => 128],
 
-            'priority' => ['priority', 'integer'],
-
-            'objectRequired' => ['object_key', 'required'],
-            'objectFilter' => ['object_key', 'filter', 'filter' => 'trim'],
-            'objectString' => ['object_key', 'string', 'max' => 128],
+            'groupNameRequired' => ['group_name', 'required'],
+            'groupNameFilter' => ['group_name', 'filter', 'filter' => 'trim'],
+            'groupNameString' => ['group_name', 'string', 'max' => 128],
         ];
     }
 
@@ -54,21 +41,47 @@ class Status extends BaseModule
     {
         return [
             'id' => StatusModule::t('core', 'ID'),
-            'priority' => StatusModule::t('core', 'Priority'),
-            'name' => StatusModule::t('core', 'Name'),
-            'object_key' => StatusModule::t('core', 'Object Key'),
+            'label' => StatusModule::t('core', 'Label'),
+            'group_name' => StatusModule::t('core', 'Group name'),
         ];
     }
     #endregion
 
-    #region Events
-    /** @inheritdoc */
-    public function beforeSave($insert)
+    #region Relations
+    /**
+     * ObjectStatus relation
+     * @return \yii\db\ActiveQuery
+     */
+    function getObjectsStatuses()
     {
-        $this->priority = self::find()
-                ->andFilterWhere(['object_key' => $this->object_key])
-                ->max('priority') + 1;
-        return parent::beforeSave($insert);
+        return $this->hasMany(ObjectStatus::className(), ['status_id' => 'id']);
     }
     #endregion
+
+    #region Events
+    #endregion
+
+    #region Methods
+    /**
+     * Get instance by name
+     * @param string $label The label of the status
+     * @return static
+     */
+    static function getByStatusLabel($label)
+    {
+        return self::findOne(['label' => $label]);
+    }
+
+    /**
+     * Get available instances of the group name
+     * @param string $group_name The name of the group
+     * @return static[]
+     */
+    static function getGroupStatuses($group_name)
+    {
+        return self::findAll([
+            'group_name' => $group_name
+        ]);
+    }
+    #endreigon
 }

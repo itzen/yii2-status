@@ -7,9 +7,8 @@
  */
 return [
     'ID' => '',
-    'Name' => 'Название',
-    'Priority' => 'Приоритет',
-    'Object Key' => 'Сущность',
+    'Label' => 'Ярлык',
+    'Group name' => 'Группа',
 
     'Continue' => 'Продолжить',
     'Update status' => 'Редактировать статус',

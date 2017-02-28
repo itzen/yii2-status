@@ -7,7 +7,7 @@ use sonkei\status\Module as StatusModule;
 
 $this->title = StatusModule::t('core', 'Update status');
 $this->params['breadcrumbs'][] = ['label' => StatusModule::t('core', 'All statuses'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->label, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

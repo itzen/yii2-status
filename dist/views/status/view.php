@@ -8,7 +8,7 @@ use sonkei\status\Module as StatusModule;
 use yii\bootstrap\Html;
 use yii\widgets\DetailView;
 
-$this->title = $model->name;
+$this->title = $model->label;
 $this->params['breadcrumbs'][] = ['label' => StatusModule::t('core', 'All statuses'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -21,9 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'priority',
-            'name',
-            'object_key',
+            'label',
+            'group_name',
         ]
     ]); ?>
 

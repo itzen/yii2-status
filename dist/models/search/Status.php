@@ -17,13 +17,11 @@ class Status extends BaseModel
     function rules()
     {
         return [
-            'nameFilter' => ['name', 'filter', 'filter' => 'trim'],
-            'nameString' => ['name', 'string', 'max' => 45],
+            'labelFilter' => ['label', 'filter', 'filter' => 'trim'],
+            'labelString' => ['label', 'string', 'max' => 128],
 
-            'priority' => ['priority', 'integer'],
-
-            'objectFilter' => ['object_key', 'filter', 'filter' => 'trim'],
-            'objectString' => ['object_key', 'string', 'max' => 128],
+            'groupNameFilter' => ['group_name', 'filter', 'filter' => 'trim'],
+            'groupNameString' => ['group_name', 'string', 'max' => 128],
         ];
     }
 
@@ -49,12 +47,9 @@ class Status extends BaseModel
         if (!$this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'priority' => $this->priority,
-        ])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'object_key', $this->object_key]);
+        $query->andFilterWhere(['id' => $this->id])
+            ->andFilterWhere(['like', 'label', $this->label])
+            ->andFilterWhere(['like', 'group_name', $this->group_name]);
 
         return $dataProvider;
     }
