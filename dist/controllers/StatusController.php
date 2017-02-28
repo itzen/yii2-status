@@ -1,19 +1,21 @@
 <?php
 
-namespace itzen\status\controllers;
+namespace sonkei\status\controllers;
 
+use sonkei\status\models\search\Status as StatusSearch;
+use sonkei\status\models\Status;
 use Yii;
-use itzen\status\models\Status;
-use itzen\status\models\search\Status as StatusSearch;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
- * StatusController implements the CRUD actions for Status model.
+ * Class StatusController
+ * @package sonkei\status\controllers
  */
 class StatusController extends Controller
 {
+    /** @inheritdoc */
     public function behaviors()
     {
         return [
@@ -28,11 +30,12 @@ class StatusController extends Controller
 
     /**
      * Lists all Status models.
-     * @return mixed
+     * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new StatusSearch;
+        /** @var StatusSearch $searchModel */
+        $searchModel = Yii::createObject(StatusSearch::className());
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
@@ -44,50 +47,17 @@ class StatusController extends Controller
     /**
      * Displays a single Status model.
      * @param integer $id
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionView($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('view', ['model' => $model]);
         }
+        return $this->render('view', ['model' => $model]);
     }
-   
-    
-    /**
-     * Displays or updates a single Status model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionPartialView($id = null)
-    {
-        if ($id === null) {
-            if (isset($_POST['expandRowKey'])) {
-                $id = (int) $_POST['expandRowKey'];
-            }
-            if (isset($_POST['Status']['id'])) {
-                $id = (int) $_POST['Status']['id'];
-            }
-        }
 
-        $model = $this->findModel($id);
-
-        if (isset($_POST['Status'])) {
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return "success";
-            }
-            else{
-                $this->renderPartial('_view', ['model' => $model]);
-            }
-        }
-
-        return $this->renderPartial('_view', ['model' => $model]);
-    }
-    
     /**
      * Creates a new Status model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -95,15 +65,14 @@ class StatusController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Status;
-
+        /** @var Status $model */
+        $model = Yii::createObject(Status::className());
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -118,11 +87,10 @@ class StatusController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

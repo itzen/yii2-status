@@ -1,19 +1,17 @@
 <?php
 
-namespace itzen\status\behaviors;
+namespace sonkei\status\behaviors;
 
-use Closure;
-use itzen\status\models\Status;
-use Yii;
+use sonkei\status\models\Status;
+use sonkei\status\Module as StatusModule;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 
 /**
  * Class StatusableBehavior
  * @property ActiveRecord $owner
- * @package itzen\status\behaviors
+ * @package sonkei\status\behaviors
  */
 class StatusableBehavior extends Behavior
 {
@@ -77,7 +75,7 @@ class StatusableBehavior extends Behavior
 
         if ($translate) {
             foreach ($statuses as $key => $status) {
-                $statuses[$key]->name = Yii::t(\itzen\status\Module::$translateCategory, $status->name);
+                $statuses[$key]->name = StatusModule::t('core', $status->name);
             }
 
         }
@@ -90,7 +88,7 @@ class StatusableBehavior extends Behavior
 
         if ($translate) {
             foreach ($statuses as $key => $status) {
-                $statuses[$key]->name = Yii::t(\itzen\status\Module::$translateCategory, $status->name);
+                $statuses[$key]->name = StatusModule::t('core', $status->name);
             }
 
         }
@@ -101,7 +99,7 @@ class StatusableBehavior extends Behavior
     {
         $status = Status::findOne(['id' => $this->owner->{$this->statusColumn}]);
         if ($translate) {
-            $status->name = \Yii::t(\itzen\status\Module::$translateCategory, $status->name);
+            $status->name = StatusModule::t('core', $status->name);
         }
         return $status;
     }
