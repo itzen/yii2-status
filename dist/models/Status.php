@@ -3,6 +3,7 @@
 namespace sonkei\status\models;
 
 use sonkei\status\Module as StatusModule;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord as BaseModule;
 
 /**
@@ -23,10 +24,13 @@ class Status extends BaseModule
         return '{{%status}}';
     }
 
-    /** @inheritdoc */
-    static function find($q = null)
+    /**
+     * @return ActiveQuery
+     */
+    static function find()
     {
-        return parent::find()->orderBy(['priority' => SORT_ASC]);
+        return parent::find()
+            ->orderBy(['priority' => SORT_ASC]);
     }
 
     /** @inheritdoc */
