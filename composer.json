@@ -1,25 +1,29 @@
 {
-    "name": "itzen/yii2-status",
-    "description": "Status module for Yii2 ",
-    "keywords": ["yii2", "status"],
-    "type": "yii2-extension",
-    "license": "BSD-3-Clause",
-    "support": {
-        "issues": "https://github.com/itzen/yii2-status/issues",
-        "source": "https://github.com/itzen/yii2-status"
-    },
-    "authors": [
-        {
-            "name": "Paweł Kania",
-            "email": "pawel.kania@itzen.pl"
-        }
-    ],
-    "require": {
-        "yiisoft/yii2": "~2.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "itzen\\status\\": ""
-        }
+  "name": "sonkei/yii2-status",
+  "description": "Status module for Yii2 ",
+  "keywords": [
+    "yii2",
+    "status"
+  ],
+  "type": "yii2-extension",
+  "license": "BSD-3-Clause",
+  "support": {
+    "issues": "https://github.com/urma94/yii2-status/issues",
+    "source": "https://github.com/urma94/yii2-status"
+  },
+  "authors": [
+    {
+      "name": "Urmat Zhenaliev",
+      "email": "sonkei@ya.ru"
     }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "sonkei\\status\\": "dist"
+    }
+  },
+  "extra": {
+    "bootstrap": "sonkei\\status\\Bootstrap"
+  }
 }
