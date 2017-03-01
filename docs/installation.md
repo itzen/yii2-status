@@ -1,12 +1,4 @@
-# sonkei/yii2-status
-Yii2 statuses module. Good when object have a lot of statuses, like `is_active`, `banned`, `indexed`, `moderated`, etc.
-
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Creative Commons License](https://i.creativecommons.org/l/by/4.0/80x15.png)](http://creativecommons.org/licenses/by/4.0/)
-
-`sonkei/yii2-status` is designed to work out of the box. It means that installation requires minimal steps. Only one configuration step should be taken and you are ready to use this module on your Yii2 website.
-
-## Installation:
+# Getting started with sonkei/google-map
 
 ### 1. Download
 
