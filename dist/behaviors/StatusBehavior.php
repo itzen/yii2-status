@@ -7,6 +7,7 @@ use sonkei\status\models\Status;
 use Yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -46,20 +47,38 @@ class StatusBehavior extends Behavior
     #region Public methods
     /**
      * Add new status
-     * @param Status $mdlStatus
-     * @return bool
+     * @param Status $mdlStatus Status that be linked
+     * @param bool $detailedResult If set TRUE result will be returned with detailed information
+     * @return array|bool
      */
-    function addStatus(Status $mdlStatus)
+    function addStatus(Status $mdlStatus, $detailedResult = false)
     {
-        #@todo Replace status if group_name match
-        /** @var ObjectStatus $object_status */
-        $object_status = Yii::createObject([
-            'class' => ObjectStatus::className(),
-            'status_id' => $mdlStatus->id,
-            'group_name' => $mdlStatus->group_name,
-            'object_id' => $this->owner->primaryKey
-        ]);
-        return $object_status->save();
+        $transaction = $this->owner::getDb()->beginTransaction();
+        try {
+            # If status already set, we simply return it. Otherwise try to add new status
+            if (null == ($object_status = ObjectStatus::findOne(['status_id' => $mdlStatus->id, 'object_id' => $this->owner->primaryKey]))) {
+                /** @var ObjectStatus $object_status */
+                $object_status = Yii::createObject([
+                    'class' => ObjectStatus::className(),
+                    'status_id' => $mdlStatus->id,
+                    'group_name' => $mdlStatus->group_name,
+                    'object_id' => $this->owner->primaryKey
+                ]);
+                $object_status->save();
+            }
+            $result = !$detailedResult ? true : [
+                'success' => true,
+                'body' => $object_status
+            ];
+            $transaction->commit();
+        } catch (Exception $exception) {
+            $transaction->rollBack();
+            $result = !$detailedResult ? false : [
+                'success' => false,
+                'body' => $exception
+            ];
+        }
+        return $result;
     }
 
     /**
